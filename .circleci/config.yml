@@ -1,0 +1,32 @@
+version: 2.1
+
+orbs:
+  azure-cli: circleci/azure-cli@1.2.2
+
+commands:
+  pre-install:
+    steps:
+      - run: |
+          echo "noting to pre install"
+
+jobs:
+  build:
+    docker:
+      - image: cimg/base:2022.04
+    steps:
+      - checkout
+      - pre-install
+      - azure-cli/install
+      - run: |
+          az login
+          cd ./funtions
+          func azure functionapp publish tc-test-function --force
+
+workflows:
+  build-deploy:
+    jobs:
+      - hold:
+          type: approval
+      - build:
+          requires:
+            - hold
