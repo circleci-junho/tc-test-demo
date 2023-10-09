@@ -19,7 +19,7 @@ jobs:
       - azure-cli/install
       - run: |
           az login
-          cd ./funtions
+          cd ./functions
           func azure functionapp publish tc-test-function --force
 
 workflows:
